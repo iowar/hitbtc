@@ -2,7 +2,6 @@ package hitbtc
 
 import (
 	"errors"
-	"fmt"
 )
 
 var (
@@ -16,7 +15,7 @@ var (
 
 func Error(msg string, args ...interface{}) error {
 	if len(args) > 0 {
-		return errors.New(fmt.Sprintf(msg, args))
+		return errors.New(spr(msg, args))
 	} else {
 		return errors.New(msg)
 	}

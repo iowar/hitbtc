@@ -30,7 +30,7 @@ func NewClient(api_key, api_secret string) (client *HitBtc, err error) {
 	client = &HitBtc{
 		api_key:    api_key,
 		api_secret: api_secret,
-		httpClient: &http.Client{Timeout: time.Second * 15}}
+	}
 
 	return
 }
