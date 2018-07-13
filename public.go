@@ -2,6 +2,7 @@ package hitbtc
 
 import (
 	"encoding/json"
+	"strconv"
 	"strings"
 	"time"
 )
