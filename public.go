@@ -116,6 +116,66 @@ type Ticker struct {
 	Symbol      string    `json:"symbol"`
 }
 
+func (t *Ticker) UnmarshalJSON(b []byte) error {
+	var ticker map[string]string
+
+	err := json.Unmarshal(b, &ticker)
+	if err != nil {
+		return err
+	}
+
+	t.Ask, err = strconv.ParseFloat(ticker["ask"], 64)
+	if err != nil {
+		t.Ask = 0
+	}
+
+	t.Bid, err = strconv.ParseFloat(ticker["bid"], 64)
+	if err != nil {
+		t.Bid = 0
+	}
+
+	t.Last, err = strconv.ParseFloat(ticker["last"], 64)
+	if err != nil {
+		t.Last = 0
+	}
+
+	t.Open, err = strconv.ParseFloat(ticker["open"], 64)
+	if err != nil {
+		t.Open = 0
+	}
+
+	t.Low, err = strconv.ParseFloat(ticker["low"], 64)
+	if err != nil {
+		t.Low = 0
+	}
+
+	t.High, err = strconv.ParseFloat(ticker["high"], 64)
+	if err != nil {
+		t.High = 0
+	}
+
+	t.Volume, err = strconv.ParseFloat(ticker["volume"], 64)
+	if err != nil {
+		t.Volume = 0
+	}
+
+	t.VolumeQuote, err = strconv.ParseFloat(ticker["volumeQuote"], 64)
+	if err != nil {
+		t.VolumeQuote = 0
+	}
+
+	layout := "2006-01-02T15:04:05.000Z"
+
+	t.Timestamp, err = time.Parse(layout, ticker["timestamp"])
+	if err != nil {
+		t.Timestamp = time.Time{}
+	}
+
+	t.Symbol = ticker["symbol"]
+
+	return nil
+}
+
 func (h *HitBtc) GetTicker(symbol string) (ticker Ticker, err error) {
 
 	respch := make(chan []byte)
