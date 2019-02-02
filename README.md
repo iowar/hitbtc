@@ -1,5 +1,7 @@
 # HitBTC API in GO
 
+[![GoDoc](https://godoc.org/github.com/iowar/hitbtc?status.svg)](https://godoc.org/github.com/iowar/hitbtc)
+
 ## Install
 ```
 $ go get -u github.com/iowar/hitbtc
