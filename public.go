@@ -169,7 +169,6 @@ func (t *Ticker) UnmarshalJSON(b []byte) error {
 	}
 
 	t.Symbol = ticker["symbol"]
-
 	return nil
 }
 
@@ -204,7 +203,6 @@ func (h *HitBtc) GetTickers() (tickers []Ticker, err error) {
 	}
 
 	err = json.Unmarshal(response, &tickers)
-
 	return
 }
 
