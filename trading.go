@@ -2,6 +2,7 @@ package hitbtc
 
 import (
 	"encoding/json"
+	"errors"
 	"strconv"
 	"strings"
 	"time"
@@ -14,7 +15,6 @@ type Balance struct {
 }
 
 func (h *HitBtc) GetBalances() (balances []Balance, err error) {
-
 	respch := make(chan []byte)
 	errch := make(chan error)
 
@@ -48,7 +48,6 @@ type Order struct {
 }
 
 func (h *HitBtc) GetOrder(clientorderid string) (order Order, err error) {
-
 	respch := make(chan []byte)
 	errch := make(chan error)
 
@@ -66,7 +65,6 @@ func (h *HitBtc) GetOrder(clientorderid string) (order Order, err error) {
 }
 
 func (h *HitBtc) GetOrders(args ...string) (orders []Order, err error) {
-
 	respch := make(chan []byte)
 	errch := make(chan error)
 
@@ -89,8 +87,38 @@ func (h *HitBtc) GetOrders(args ...string) (orders []Order, err error) {
 	return
 }
 
-func (h *HitBtc) Buy(symbol string, price, quantity float64) (order Order, err error) {
+func (h *HitBtc) GetOrderStatus(clientorderid string) (order Order, err error) {
+	respch := make(chan []byte)
+	errch := make(chan error)
 
+	var parameters = make(map[string]string)
+	parameters["clientOrderId"] = clientorderid
+
+	go h.tradeRequest("get", "/api/2/history/order", parameters, respch, errch)
+
+	response := <-respch
+	err = <-errch
+
+	if err != nil {
+		return
+	}
+
+	var orders []Order
+	err = json.Unmarshal(response, &orders)
+	if err != nil {
+		return
+	}
+
+	if len(orders) > 0 {
+		order = orders[0]
+		return
+	}
+
+	err = errors.New("Order Not Found!")
+	return
+}
+
+func (h *HitBtc) Buy(symbol string, price, quantity float64) (order Order, err error) {
 	respch := make(chan []byte)
 	errch := make(chan error)
 
@@ -115,7 +143,6 @@ func (h *HitBtc) Buy(symbol string, price, quantity float64) (order Order, err e
 }
 
 func (h *HitBtc) Sell(symbol string, price, quantity float64) (order Order, err error) {
-
 	respch := make(chan []byte)
 	errch := make(chan error)
 
@@ -140,7 +167,6 @@ func (h *HitBtc) Sell(symbol string, price, quantity float64) (order Order, err 
 }
 
 func (h *HitBtc) CancelOrder(clientorderid string) (order Order, err error) {
-
 	respch := make(chan []byte)
 	errch := make(chan error)
 
@@ -158,7 +184,6 @@ func (h *HitBtc) CancelOrder(clientorderid string) (order Order, err error) {
 }
 
 func (h *HitBtc) CancelOrders(args ...string) (orders []Order, err error) {
-
 	respch := make(chan []byte)
 	errch := make(chan error)
 
@@ -187,7 +212,6 @@ type Fee struct {
 }
 
 func (h *HitBtc) GetFee(symbol string) (fee Fee, err error) {
-
 	respch := make(chan []byte)
 	errch := make(chan error)
 
@@ -205,7 +229,6 @@ func (h *HitBtc) GetFee(symbol string) (fee Fee, err error) {
 }
 
 func (h *HitBtc) GetOrderHistory(symbol string, limit int) (orders []Order, err error) {
-
 	respch := make(chan []byte)
 	errch := make(chan error)
 
@@ -243,7 +266,6 @@ type Trade struct {
 }
 
 func (h *HitBtc) GetTradeHistory(symbol string, limit int) (trades []Trade, err error) {
-
 	respch := make(chan []byte)
 	errch := make(chan error)
 
@@ -269,7 +291,6 @@ func (h *HitBtc) GetTradeHistory(symbol string, limit int) (trades []Trade, err 
 }
 
 func (h *HitBtc) GetTradesByOrder(orderid uint64) (trades []Trade, err error) {
-
 	respch := make(chan []byte)
 	errch := make(chan error)
 
@@ -289,7 +310,6 @@ func (h *HitBtc) GetTradesByOrder(orderid uint64) (trades []Trade, err error) {
 }
 
 func (h *HitBtc) GetAccountBalances() (balances []Balance, err error) {
-
 	respch := make(chan []byte)
 	errch := make(chan error)
 
@@ -312,7 +332,6 @@ type Deposit struct {
 }
 
 func (h *HitBtc) GetDepositAddress(symbol string) (deposit Deposit, err error) {
-
 	respch := make(chan []byte)
 	errch := make(chan error)
 
@@ -330,7 +349,6 @@ func (h *HitBtc) GetDepositAddress(symbol string) (deposit Deposit, err error) {
 }
 
 func (h *HitBtc) NewDepositAddress(symbol string) (deposit Deposit, err error) {
-
 	respch := make(chan []byte)
 	errch := make(chan error)
 

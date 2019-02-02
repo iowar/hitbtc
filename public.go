@@ -22,7 +22,6 @@ type Currency struct {
 }
 
 func (h *HitBtc) GetCurrency(id string) (currency Currency, err error) {
-
 	respch := make(chan []byte)
 	errch := make(chan error)
 
@@ -40,7 +39,6 @@ func (h *HitBtc) GetCurrency(id string) (currency Currency, err error) {
 }
 
 func (h *HitBtc) GetCurrencies() (currencies []Currency, err error) {
-
 	respch := make(chan []byte)
 	errch := make(chan error)
 
@@ -69,7 +67,6 @@ type Symbol struct {
 }
 
 func (h *HitBtc) GetSymbol(id string) (symbol Symbol, err error) {
-
 	respch := make(chan []byte)
 	errch := make(chan error)
 
@@ -87,7 +84,6 @@ func (h *HitBtc) GetSymbol(id string) (symbol Symbol, err error) {
 }
 
 func (h *HitBtc) GetSymbols() (symbols []Symbol, err error) {
-
 	respch := make(chan []byte)
 	errch := make(chan error)
 
@@ -178,7 +174,6 @@ func (t *Ticker) UnmarshalJSON(b []byte) error {
 }
 
 func (h *HitBtc) GetTicker(symbol string) (ticker Ticker, err error) {
-
 	respch := make(chan []byte)
 	errch := make(chan error)
 
@@ -196,7 +191,6 @@ func (h *HitBtc) GetTicker(symbol string) (ticker Ticker, err error) {
 }
 
 func (h *HitBtc) GetTickers() (tickers []Ticker, err error) {
-
 	respch := make(chan []byte)
 	errch := make(chan error)
 
@@ -223,7 +217,6 @@ type MarketTrade struct {
 }
 
 func (h *HitBtc) GetTrades(symbol string) (trades []MarketTrade, err error) {
-
 	respch := make(chan []byte)
 	errch := make(chan error)
 
@@ -251,7 +244,6 @@ type OrderBook struct {
 }
 
 func (h *HitBtc) GetOrderBook(symbol string, args ...int) (orderbooks OrderBook, err error) {
-
 	var limit int
 
 	respch := make(chan []byte)
@@ -293,7 +285,6 @@ type Candle struct {
 // period list
 // M1 (one minute), M3, M5, M15, M30, H1, H4, D1, D7, 1M (one month).
 func (h *HitBtc) GetCandles(symbol, period string, limit int) (candles []Candle, err error) {
-
 	var pfl int
 
 	for _, v := range []string{"M1", "M3", "M5", "M15", "M30", "H1", "H4", "D1", "D7", "1M"} {
