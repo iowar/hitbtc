@@ -64,6 +64,7 @@ func main() {
         r, err := hitbtc.GetBalances()
         //r, err := hitbtc.GetOrder("<valid_orderid>")
         //r, err := hitbtc.GetOrders("iplbtc")
+        //r, err := hitbtc.GetOrderStatus("clientOrderId")
         //r, err := hitbtc.Buy("iplbtc", 0.00000001, 10000)
         //r, err := hitbtc.Sell("iplbtc", 1, 1000)
         //r, err := hitbtc.CancelOrder("<valid_orderid>")
