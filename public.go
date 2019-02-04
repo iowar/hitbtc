@@ -283,15 +283,18 @@ type Candle struct {
 // period list
 // M1 (one minute), M3, M5, M15, M30, H1, H4, D1, D7, 1M (one month).
 func (h *HitBtc) GetCandles(symbol, period string, limit int) (candles []Candle, err error) {
-	var pfl int
-
-	for _, v := range []string{"M1", "M3", "M5", "M15", "M30", "H1", "H4", "D1", "D7", "1M"} {
-		if period == v {
-			pfl++
-		}
-	}
-
-	if pfl == 0 {
+	switch period {
+	case "M1":
+	case "M3":
+	case "M5":
+	case "M15":
+	case "M30":
+	case "H1":
+	case "H4":
+	case "D1":
+	case "D7":
+	case "1M":
+	default:
 		return nil, Error(PeriodError)
 	}
 
