@@ -26,7 +26,6 @@ type HitBtc struct {
 }
 
 func NewClient(api_key, api_secret string) (client *HitBtc, err error) {
-
 	client = &HitBtc{
 		api_key:    api_key,
 		api_secret: api_secret,
@@ -37,9 +36,6 @@ func NewClient(api_key, api_secret string) (client *HitBtc, err error) {
 }
 
 func (h *HitBtc) publicRequest(action string, respch chan<- []byte, errch chan<- error) {
-
-	<-throttle
-
 	defer close(respch)
 	defer close(errch)
 
@@ -54,6 +50,7 @@ func (h *HitBtc) publicRequest(action string, respch chan<- []byte, errch chan<-
 
 	req.Header.Add("Accept", "application/json")
 
+	<-throttle
 	resp, err := h.httpClient.Do(req)
 	if err != nil {
 		respch <- nil
@@ -96,15 +93,7 @@ func checkServerError(response []byte) error {
 	}
 }
 
-func (h *HitBtc) tradeRequest(
-	method, action string,
-	parameters map[string]string,
-	respch chan<- []byte,
-	errch chan<- error,
-) {
-
-	<-throttle
-
+func (h *HitBtc) tradeRequest(method, action string, parameters map[string]string, respch chan<- []byte, errch chan<- error) {
 	defer close(respch)
 	defer close(errch)
 
@@ -146,6 +135,7 @@ func (h *HitBtc) tradeRequest(
 	req.Header.Add("Accept", "application/json")
 	req.SetBasicAuth(h.api_key, h.api_secret)
 
+	<-throttle
 	resp, err := h.httpClient.Do(req)
 	if err != nil {
 		respch <- nil
