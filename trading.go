@@ -357,11 +357,11 @@ func (h *HitBtc) GetTradeHistory(symbol string, limit int) (trades []Trade, err 
 	return
 }
 
-func (h *HitBtc) GetTradesByOrder(orderid uint64) (trades []Trade, err error) {
+func (h *HitBtc) GetTradesByOrder(orderid string) (trades []Trade, err error) {
 	respch := make(chan []byte)
 	errch := make(chan error)
 
-	action := spr("/api/2/history/order/%d/trades", orderid)
+	action := spr("/api/2/history/order/%s/trades", orderid)
 
 	go h.tradeRequest("get", action, nil, respch, errch)
 
