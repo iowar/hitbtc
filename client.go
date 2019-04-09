@@ -61,11 +61,15 @@ func (h *HitBtc) publicRequest(action string, respch chan<- []byte, errch chan<-
 	defer resp.Body.Close()
 	body, err := ioutil.ReadAll(resp.Body)
 	if err != nil {
-
 		respch <- body
 		errch <- err
-
 		return
+	}
+
+	err = checkServerError(body)
+	if err != nil {
+		respch <- nil
+		errch <- err
 	}
 
 	respch <- body
